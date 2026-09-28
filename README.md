@@ -25,9 +25,7 @@ python3 -m http.server 4173 --bind 127.0.0.1
 
 ## 发布到 GitHub Pages
 
-将本目录内容上传至 GitHub 仓库根目录。进入仓库 Settings → Pages → Build and deployment，选择 GitHub Actions。推送 main 分支或手动运行 Publish travel guide 工作流后，网站会自动发布。
-
-也支持不使用 Actions：Settings → Pages → Deploy from a branch，选 `main` 与 `/(root)`。根目录 `.nojekyll` 已包含；不要同时启用两种发布方式。
+本项目使用 GitHub Pages 内置的分支发布。将本目录内容上传至 GitHub 仓库根目录，进入 Settings → Pages → Build and deployment → Deploy from a branch，选 `main` 与 `/(root)`。根目录 `.nojekyll` 已包含，无需安装依赖或自定义构建工作流。提交更新后 GitHub 自动重新发布。
 
 资源使用相对路径，可部署到 `https://用户名.github.io/仓库名/`。
 
