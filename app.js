@@ -10,13 +10,203 @@ const cities = [
   {id:'chiangmai',name:'清迈',en:'CHIANG MAI',lat:18.7883,lon:98.9853,photo:'chiangmai.jpg',alt:'清迈双龙寺金色佛塔',desc:'古城散步，山林呼吸。',tags:'古城 · 咖啡 · 山林'}
 ];
 const packingGroups = [
-  {id:'documents',name:'证件与预订',items:[['passport','护照','与电子备份分开保存'],['tickets','机票与酒店确认单','提前下载离线副本'],['insurance','旅行保险与紧急联系人','按个人情况准备'],['payment','银行卡与泰铢现金','分开保管']]},
-  {id:'clothes',name:'衣物与鞋履',items:[['tops','轻薄透气上衣','按旅行天数准备，可结合中途洗衣'],['underwear','内衣与袜子',''],['temple','遮肩上衣与过膝下装','寺庙参观备用'],['jacket','薄外套','机舱、商场与山上备用'],['shoes','舒适步行鞋',''],['swim','泳衣与凉鞋','芭堤雅海边']]},
-  {id:'weather',name:'防晒与防雨',items:[['sunscreen','防晒用品',''],['hat','遮阳帽与太阳镜',''],['umbrella','折叠伞或轻便雨衣',''],['bag','防水袋','海边与雨天保护物品']]},
-  {id:'electronics',name:'数码与网络',items:[['phone','手机与充电线',''],['power','充电宝','携带规定以承运航空公司为准'],['adapter','旅行转换插头',''],['esim','手机漫游 / SIM / eSIM','提前确认设备兼容'],['offline','离线地图与翻译','出发前下载']]},
-  {id:'daily',name:'洗护与日常',items:[['toiletries','个人洗护用品',''],['medicine','个人常用药','原包装与所需说明'],['repellent','驱蚊用品',''],['tissue','纸巾与湿巾',''],['bottle','可重复使用水杯','']]},
-  {id:'group',name:'六人同行',items:[['meet','确认集合地点与时间',''],['split','确认分账方式',''],['luggage','核对每人的行李额度','以已订机票为准'],['transfer','确认接送车与行李空间','六人出行，预约前说明箱数']]}
+  {
+    "id": "documents",
+    "name": "证件与入境准备",
+    "items": [
+      [
+        "passport",
+        "护照",
+        "核对有效期至少 6 个月，确认证件无破损、严重污渍；留存电子备份。",
+        "entry"
+      ],
+      [
+        "tdac",
+        "TDAC 电子入境卡",
+        "自 2025 年 5 月起启用；按官方窗口在抵达前 3 天内免费填写，下载确认卡并保存二维码备查。",
+        "tdac"
+      ],
+      [
+        "tickets",
+        "行程单与酒店订单",
+        "保存往返机票行程单和酒店确认单的离线电子版，按需打印，便于入境查验。"
+      ],
+      [
+        "insurance",
+        "旅游保险",
+        "按需要选择涵盖境外医疗、意外与航班延误的保险；保存保单及紧急联系信息。"
+      ]
+    ]
+  },
+  {
+    "id": "money",
+    "name": "货币与支付",
+    "items": [
+      [
+        "payment",
+        "泰铢现金",
+        "可向国内银行预约，或在当地正规兑换点兑换。免签入境官方说明为每人至少 20,000 泰铢、每家庭 40,000 泰铢或等值现金；其他入境类别另行核对，六位朋友不按一个家庭合并。",
+        "cash"
+      ],
+      [
+        "cards",
+        "支付工具",
+        "支付宝、微信支付是否可用以商户为准；夜市、小店及部分交通备好现金，另备 Visa / Mastercard 银行卡。"
+      ],
+      [
+        "coinpurse",
+        "零钱包",
+        "单独装硬币和小额纸钞，打车、夜市和买小吃时使用。"
+      ]
+    ]
+  },
+  {
+    "id": "electronics",
+    "name": "网络与电子设备",
+    "items": [
+      [
+        "esim",
+        "电话卡 / 国际漫游",
+        "可选 AIS、TrueMove 等 SIM / eSIM，或开通国际漫游；出发前确认手机兼容性、实名激活与套餐有效期。"
+      ],
+      [
+        "power",
+        "充电宝",
+        "自备标识清晰、容量合规的充电宝及充电线，只放随身行李。数量、Wh 容量、认证及机上使用规定，以实际承运航空公司最新要求为准。",
+        "power"
+      ],
+      [
+        "adapter",
+        "插头转换器",
+        "泰国插座规格并不统一；按设备插头及酒店插座准备转换器，三脚设备尤其要核对，并检查充电器支持当地电压。"
+      ]
+    ]
+  },
+  {
+    "id": "clothes",
+    "name": "衣物与穿搭",
+    "items": [
+      [
+        "tops",
+        "日常夏装",
+        "准备透气短袖、短裤、长裙等及换洗内衣袜子；结合旅行天数和中途洗衣安排。"
+      ],
+      [
+        "temple",
+        "寺庙专用装",
+        "准备不透的有袖上衣、长裤或合适长裙，遮肩过膝；大皇宫要求更严格，不要只依赖冰袖或薄披肩。",
+        "temple"
+      ],
+      [
+        "jacket",
+        "薄外套",
+        "机舱、商场与轨道交通空调较凉时备用，方便随温度增减衣物。"
+      ],
+      [
+        "shoes",
+        "舒适鞋履",
+        "一双适合步行的运动鞋，加一双方便穿脱的拖鞋或洞洞鞋；按场所着装要求选择。"
+      ]
+    ]
+  },
+  {
+    "id": "weather",
+    "name": "防晒与驱蚊",
+    "items": [
+      [
+        "sunscreen",
+        "硬防晒与防晒用品",
+        "防晒霜 / 喷雾、遮阳帽、墨镜和防晒伞，按需准备并及时补涂；喷雾、液体携带限制按航司要求。"
+      ],
+      [
+        "repellent",
+        "驱蚊止痒",
+        "准备适合自己的驱蚊液与止痒用品，如已确认适用的青草膏；按标签使用，敏感肌先确认成分。"
+      ],
+      [
+        "aftersun",
+        "晒后修复（可选）",
+        "按个人习惯带保湿用品、修护面膜或芦荟胶；选用已耐受产品，不把晒后护理当作防晒替代。"
+      ]
+    ]
+  },
+  {
+    "id": "daily",
+    "name": "洗护与生活小物件",
+    "items": [
+      [
+        "shower-filter",
+        "过滤花洒（可选）",
+        "按个人偏好和行李空间决定；先确认酒店接口与是否允许安装。过滤效果因产品而异，不保证软化水质或预防过敏。"
+      ],
+      [
+        "toiletries",
+        "一次性用品与洗护",
+        "提前询问酒店是否提供牙具、拖鞋；按需自备牙具、拖鞋、马桶垫、抽纸和湿厕纸，使用后按现场要求处理。"
+      ],
+      [
+        "quickdry",
+        "速干浴巾",
+        "芭堤雅海边、游泳或浮潜时备用，选择轻便易干的款式。"
+      ]
+    ]
+  },
+  {
+    "id": "medicines",
+    "name": "常用药品",
+    "items": [
+      [
+        "gastrointestinal",
+        "肠胃药",
+        "原清单提到蒙脱石散、肠炎宁等，是否适用请按说明书或咨询药师，不作预防性服用；可备口服补液盐。",
+        "health"
+      ],
+      [
+        "cold",
+        "感冒与退烧药",
+        "按个人情况备常用药，检查成分，避免不同复方药重复用药；温差本身不等于感染。"
+      ],
+      [
+        "motion",
+        "晕车 / 晕船药",
+        "计划出海或坐长途车时按需准备；提前了解服用时间、嗜睡等副作用与禁忌。"
+      ],
+      [
+        "firstaid",
+        "创可贴与碘伏棉签",
+        "备用于轻微擦伤、磨脚；药品保留原包装，携带受管制成分时核对泰国入境要求。"
+      ]
+    ]
+  },
+  {
+    "id": "apps",
+    "name": "必备 APP",
+    "items": [
+      [
+        "grab",
+        "Grab / Bolt",
+        "出发前安装并完成登录，打车前核对车型、报价、车牌和上车点；外卖可查看 Grab 当地服务。"
+      ],
+      [
+        "offline",
+        "Google Maps",
+        "保存酒店、机场和想去的地点，提前下载离线地图；导航结果结合现场路况判断。"
+      ],
+      [
+        "translate",
+        "DeepL / 有道翻译",
+        "用于菜单和日常沟通；提前测试拍照翻译及离线功能是否支持所需语言。"
+      ],
+      [
+        "superrich",
+        "SuperRich 汇率查询",
+        "通过所选 SuperRich 品牌的官网或官方应用查询营业网点与现钞牌价，再比较兑换；实际汇率以柜台为准。"
+      ]
+    ]
+  }
 ];
+const legacyPackingItems = [["underwear", "内衣与袜子"], ["swim", "泳衣与凉鞋"], ["hat", "遮阳帽与太阳镜"], ["umbrella", "折叠伞或轻便雨衣"], ["bag", "防水袋"], ["phone", "手机与充电线"], ["medicine", "个人常用药"], ["tissue", "纸巾与湿巾"], ["bottle", "可重复使用水杯"], ["meet", "确认集合地点与时间"], ["split", "确认分账方式"], ["luggage", "核对每人的行李额度"], ["transfer", "确认接送车与行李空间"]];
+const packingSources = {"tdac": ["TDAC 官方填写入口", "https://tdac.immigration.go.th/arrival-card/#/home"], "entry": ["护照要求 · 泰国使馆", "https://brussels.thaiembassy.org/en/page/visa-exemption"], "cash": ["免签现金要求 · 泰国使馆", "https://washingtondc.thaiembassy.org/en/page/visaexempt-voajul2024"], "power": ["充电宝规定 · IATA", "https://www.iata.org/contentassets/90f8038b0eea42069554b2f4530f49ea/guidance-to-operators---power-banks.pdf"], "temple": ["大皇宫着装要求", "https://www.royalgrandpalace.th/en/visit/practical-information"], "health": ["旅行腹泻准备 · CDC", "https://wwwnc.cdc.gov/travel/page/travelers-diarrhea"]};
 const members=[{id:'jinxi',name:'近西'},{id:'kitty',name:'kitty'},{id:'bing',name:'饼'},{id:'yanye',name:'颜烨'},{id:'azer',name:'Azer'},{id:'jing',name:'璟'}];
 const scheduledCity=date=>date>='2026-09-28'&&date<='2026-09-30'?'bangkok':date>='2026-10-01'&&date<='2026-10-03'?'pattaya':date>='2026-10-04'&&date<='2026-10-08'?'chiangmai':'';
 const scheduledFrom=date=>date==='2026-10-01'?'bangkok':date==='2026-10-04'?'pattaya':'';
@@ -35,10 +225,17 @@ function normalizeBase(data){
     if(Array.isArray(d.events))clean.days[date].events=d.events.slice(0,30).filter(e=>e&&typeof e.title==='string'&&e.title.trim()).map((e,i)=>({id:str(e.id,80)||'import-'+i,title:str(e.title,100),time:/^([01]\d|2[0-3]):[0-5]\d$/.test(e.time)?e.time:'',duration:str(e.duration,40),place:str(e.place,200),travel:str(e.travel,160),notes:str(e.notes,2000)}));
     const seen=new Set();clean.days[date].events.forEach((e,i)=>{if(seen.has(e.id))e.id='import-'+i+'-'+date;seen.add(e.id);});
   }
-  if(Array.isArray(data.customItems))clean.customItems=data.customItems.slice(0,100).filter(i=>i&&typeof i.text==='string'&&i.text.trim()).map((i,n)=>({id:typeof i.id==='string'&&/^custom-[a-zA-Z0-9-]+$/.test(i.id)?i.id:'custom-import-'+n,text:str(i.text,60)}));
+  if(Array.isArray(data.customItems))clean.customItems=data.customItems.slice(0,113).filter(i=>i&&typeof i.text==='string'&&i.text.trim()).map((i,n)=>({id:typeof i.id==='string'&&/^custom-[a-zA-Z0-9-]+$/.test(i.id)?i.id:'custom-import-'+n,text:str(i.text,60)}));
   clean.customItems=clean.customItems.filter((v,i,a)=>a.findIndex(x=>x.id===v.id)===i);
+  // Preserve previously checked items no longer in the new eight categories.
+  for(const [id,text] of legacyPackingItems){
+    const migratedId='custom-legacy-'+id;
+    if(data.packed?.[id]===true&&!clean.customItems.some(item=>item.id===migratedId)){
+      clean.customItems.push({id:migratedId,text});clean.packed[migratedId]=true;
+    }
+  }
   const allowed=new Set([...packingGroups.flatMap(g=>g.items.map(i=>i[0])),...clean.customItems.map(i=>i.id)]);
-  if(data.packed&&typeof data.packed==='object')for(const k of allowed)if(data.packed[k]===true)clean.packed[k]=true;
+  const packed={};for(const k of allowed)if(data.packed?.[k]===true||clean.packed[k]===true)packed[k]=true;clean.packed=packed;
   return clean;
 }
 function normalize(data){
@@ -124,7 +321,7 @@ function renderTransport(){
 function allPacking(){return [...packingGroups.flatMap(g=>g.items.map(i=>({id:i[0],text:i[1]}))),...profile().customItems];}
 function updatePackingProgress(){const items=allPacking(),done=items.filter(i=>profile().packed[i.id]).length,total=items.length,percent=total?Math.round(done/total*100):0;$('#packing-count').textContent=done+'/'+total;$('#preview-progress').style.width=percent+'%';$('#packing-progress').style.width=percent+'%';$('#preview-packed').textContent=done+' / '+total+' 件已准备';$('#packing-total').textContent=done+' / '+total+' 已打包';}
 function renderPacking(){
-  const groupHTML=(name,items,custom=false)=>{const visible=items.filter(i=>filter!=='pending'||!profile().packed[i[0]]);if(!visible.length)return '';return `<section class="packing-group"><div class="packing-group-heading"><h3>${name}</h3><span>${items.filter(i=>profile().packed[i[0]]).length}/${items.length}</span></div>${visible.map(i=>`<div class="${custom?'custom-row':''}"><label class="check-item ${profile().packed[i[0]]?'checked':''}"><input type="checkbox" data-pack="${esc(i[0])}" ${profile().packed[i[0]]?'checked':''}><span>${esc(i[1])}${i[2]?`<small>${esc(i[2])}</small>`:''}</span></label>${custom?`<button class="delete-item" data-remove-item="${esc(i[0])}" aria-label="删除${esc(i[1])}">×</button>`:''}</div>`).join('')}</section>`;};
+  const groupHTML=(name,items,custom=false)=>{const visible=items.filter(i=>filter!=='pending'||!profile().packed[i[0]]);if(!visible.length)return '';return `<section class="packing-group"><div class="packing-group-heading"><h3>${name}</h3><span>${items.filter(i=>profile().packed[i[0]]).length}/${items.length}</span></div>${visible.map(i=>`<div class="${custom?'custom-row':''}"><label class="check-item ${profile().packed[i[0]]?'checked':''}"><input type="checkbox" data-pack="${esc(i[0])}" ${profile().packed[i[0]]?'checked':''}><span>${esc(i[1])}${i[2]?`<small>${esc(i[2])}</small>`:''}</span></label>${!custom&&packingSources[i[3]]?`<a class="packing-source" href="${packingSources[i[3]][1]}" target="_blank" rel="noopener noreferrer">${packingSources[i[3]][0]} ↗</a>`:''}${custom?`<button class="delete-item" data-remove-item="${esc(i[0])}" aria-label="删除${esc(i[1])}">×</button>`:''}</div>`).join('')}</section>`;};
   $('#packing-groups').innerHTML=packingGroups.map(g=>groupHTML(g.name,g.items)).join('')+groupHTML('我的补充',profile().customItems.map(i=>[i.id,i.text,'']),true)||'<p class="empty-note">都准备好了，轻松出发！</p>';
   updatePackingProgress();window.tripCloud?.access();
 }
