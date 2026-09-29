@@ -1,49 +1,54 @@
-# 慢游泰国
+# 慢游泰国 · 六人共享旅行手册
 
-2026 年 9 月 29 日至 10 月 8 日，6 人的旅行手册。城市顺序为曼谷 → 芭堤雅 → 清迈。各城市停留日期和每日活动由旅行者填写，不预设景点。
+2026-09-28 至 2026-10-08，近西、kitty、饼、颜烨、Azer、璟。
+
+城市安排：9/28 抵达曼谷，9/28–9/30 曼谷；10/1 曼谷至芭堤雅，10/1–10/4 芭堤雅；10/4 前往清迈，10/4–10/8 清迈，10/8 回国。活动由旅行者自行填写。
 
 ## 功能
 
-- 每日行程：选择城市，添加、编辑、删除时间 / 地点 / 停留时长 / 交通 / 备注。
-- 三城真实天气：Open-Meteo，无 API Key；最多获取未来 16 天，优先显示旅行日期范围，范围外显示最近 7 天，按停留日期标记旅行日。失败时显示明确状态，不使用虚构数据。
-- 路程：城际参考与 Google Maps 导航；连续两个有地址的安排可查询两站路线。
-- 行李清单：28 件初始物品、自定义物品、进度、尚未准备筛选。
-- JSON 导入导出、打印完整行程、本地自动保存。
-- 手机、平板和电脑布局；键盘操作与表单标签。
+- 共同安排与六位成员各自的每日行程、机票、酒店、行李清单。
+- 机票支持起飞/抵达日期与当地时间、机场、航站楼、行李额度、备注；酒店支持入住/退房日期、地址、备注。
+- Supabase 云端共享：专属邀请链接加入，可查看全员资料，仅能修改自己的资料与共同安排。访问控制由数据库执行。
+- 保存后自动上传，页面打开时每 10 秒刷新；断网时本机保留草稿、联网自动重试。提示已同步、待同步或冲突。
+- 同一成员/共同安排被多设备同时修改时使用版本校验拒绝过期更新，提示导出草稿后读取云端版本，不静默覆盖。
+- 天气仅显示停留/换城日期：曼谷 4 个日期、芭堤雅 4 个日期、清迈 5 个日期；已过去或超出预报范围的日期标记缺失，不用其他日期代替。
+- Google Maps 路线、JSON 备份、当前成员打印、手机布局。
 
-机票和酒店已预订，具体信息待补充。
-
-## 本地查看
-
-无需安装依赖：
+## 本地运行
 
 ```sh
 python3 -m http.server 4173 --bind 127.0.0.1
 ```
 
-访问 `http://127.0.0.1:4173/`。不要用 file:// 打开，以保证浏览器存储和网络请求行为一致。
+访问 http://127.0.0.1:4173/ 。依赖库本地托管于 vendor，不需要 npm 安装。
 
-## 发布到 GitHub Pages
+## GitHub Pages
 
-本项目使用 GitHub Pages 内置的分支发布。将本目录内容上传至 GitHub 仓库根目录，进入 Settings → Pages → Build and deployment → Deploy from a branch，选 `main` 与 `/(root)`。根目录 `.nojekyll` 已包含，无需安装依赖或自定义构建工作流。提交更新后 GitHub 自动重新发布。
+上传本目录到仓库根目录。在 Settings → Pages 选择 Deploy from a branch → main → /(root)。`.nojekyll` 已包含。`cloud-config.js` 仅包含公开的项目地址和 publishable key，不能填入 service_role、数据库密码或邀请链接。
 
-资源使用相对路径，可部署到 `https://用户名.github.io/仓库名/`。
+## 云端初始化
 
-## 数据保存与分享
+1. 创建免费 Supabase 项目，启用 Data API 与 RLS。
+2. 在 SQL Editor 执行 `backend-schema.sql`（新项目，只执行一次）。
+3. 在 Authentication → Sign In / Providers 启用 anonymous sign-ins。匿名会话仍需有效邀请才能读取任何旅行资料。
+4. 在 SQL Editor 执行 `backend-invitations.sql`，六条结果分别交给本人，不提交到 GitHub。重复执行会更换邀请链接，既有会话仍有效。
+5. 填写 `cloud-config.js` 的公开 URL 与 publishable key。
 
-这是无后端的静态网页。修改保存到当前网站域名下的浏览器 localStorage；不自动写入 GitHub，也不会在六个人或多设备之间实时同步。
+专属邀请包含随机 256 位 token，数据库只存 SHA-256 摘要，客户端加入后立即从地址栏移除。个人链接允许在本人多个设备加入，也赋予持有者该成员权限，请勿转发给其他人。将 trip_invites.enabled 设为 false 可撤销该成员所有会话的数据访问。
 
-在「每日行程」导出 JSON 进行备份或发给同行人，其他人可以在相同网页导入。导入前会提示替换当前数据。清理浏览器数据、隐私模式或更换网址可能导致本地数据不可用，请保留导出文件。日程中如填写了私人信息，分享前自行检查。
+数据库采用行级安全策略，仅成员可读取，写入通过检查所属成员和版本号的函数执行。所有表禁止匿名公开读取与直接写入；记录按成员隔离，成员之间互不覆盖。
 
-## 内容与照片来源
+## 备份与数据迁移
 
-交通时间仅为规划参考，非实时路况或已订安排。公开网页不含酒店地址、航班号和个人证件信息。
+旧 v1 数据在本机保留备份，并迁移至共同安排；默认起始日期更新为 9/28，已写的活动与备注保留。首次连接云端前另保存本机快照。云端模式不自动上传旧本机数据，以免覆盖其他成员；可以导出旧备份后手动整理。
 
-- 天气：[Open-Meteo](https://open-meteo.com/)，CC BY 4.0。
-- 曼谷—芭堤雅距离：[泰国旅游局](https://www.tourismthailand.org/Destinations/Provinces/Pattaya/469)。
-- 曼谷—清迈航线：[泰国航空](https://www.thaiairways.com/flights/en-th/flights-from-bangkok-to-chiang-mai)。
-- 曼谷照片：[Wat Arun Sunset](https://commons.wikimedia.org/wiki/File:Wat_Arun_Sunset.jpg)，miketnorton，[CC BY 2.0](https://creativecommons.org/licenses/by/2.0/)。
-- 芭堤雅照片：[Pattaya Beach, Thailand](https://commons.wikimedia.org/wiki/File:Pattaya_Beach,_Thailand.jpg)，© Vyacheslav Argenberg，[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)。
-- 清迈照片：[Doi Suthep Temple Chiang Mai Thailand](https://commons.wikimedia.org/wiki/File:Doi_Suthep_Temple_Chiang_Mai_Thailand.jpg)，Philip Nalangan，[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)。
+完整导出包含六位成员信息，请仅在同行人之间分享。共享模式禁用整体导入，避免覆盖他人数据。离线草稿存于本机，需要重新打开相同网址联网完成上传；清理浏览器数据前务必导出。
 
-照片已缩放，并在界面中裁切显示。照片本地托管，天气、Google Fonts 与地图导航需要联网。
+当前采用定时同步而非即时推送，其他成员一般在 10 秒左右看到更新。当前页面在后台时暂停主动刷新。免费服务可能暂停，恢复后重新同步即可。
+
+## 来源
+
+- 天气：[Open-Meteo](https://open-meteo.com/)，CC BY 4.0。网络失败明确显示缺失。
+- 路程参考：[泰国旅游局](https://www.tourismthailand.org/Destinations/Provinces/Pattaya/469)。耗时为估算，非实时路况。
+- 城市照片：详见 `assets/README.md`，Wikimedia Commons 的 CC BY 照片。
+- Supabase 客户端：详见 `vendor/README.md` 与许可证。
