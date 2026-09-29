@@ -208,10 +208,10 @@ const packingGroups = [
 const legacyPackingItems = [["underwear", "内衣与袜子"], ["swim", "泳衣与凉鞋"], ["hat", "遮阳帽与太阳镜"], ["umbrella", "折叠伞或轻便雨衣"], ["bag", "防水袋"], ["phone", "手机与充电线"], ["medicine", "个人常用药"], ["tissue", "纸巾与湿巾"], ["bottle", "可重复使用水杯"], ["meet", "确认集合地点与时间"], ["split", "确认分账方式"], ["luggage", "核对每人的行李额度"], ["transfer", "确认接送车与行李空间"]];
 const packingSources = {"tdac": ["TDAC 官方填写入口", "https://tdac.immigration.go.th/arrival-card/#/home"], "entry": ["护照要求 · 泰国使馆", "https://brussels.thaiembassy.org/en/page/visa-exemption"], "cash": ["免签现金要求 · 泰国使馆", "https://washingtondc.thaiembassy.org/en/page/visaexempt-voajul2024"], "power": ["充电宝规定 · IATA", "https://www.iata.org/contentassets/90f8038b0eea42069554b2f4530f49ea/guidance-to-operators---power-banks.pdf"], "temple": ["大皇宫着装要求", "https://www.royalgrandpalace.th/en/visit/practical-information"], "health": ["旅行腹泻准备 · CDC", "https://wwwnc.cdc.gov/travel/page/travelers-diarrhea"]};
 const members=[{id:'jinxi',name:'近西'},{id:'kitty',name:'kitty'},{id:'bing',name:'饼'},{id:'yanye',name:'颜烨'},{id:'azer',name:'Azer'},{id:'jing',name:'璟'}];
-const scheduledCity=date=>date>='2026-09-28'&&date<='2026-09-30'?'bangkok':date>='2026-10-01'&&date<='2026-10-03'?'pattaya':date>='2026-10-04'&&date<='2026-10-08'?'chiangmai':'';
+const scheduledCity=date=>date>='2026-09-29'&&date<='2026-09-30'?'bangkok':date>='2026-10-01'&&date<='2026-10-03'?'pattaya':date>='2026-10-04'&&date<='2026-10-08'?'chiangmai':'';
 const scheduledFrom=date=>date==='2026-10-01'?'bangkok':date==='2026-10-04'?'pattaya':'';
 const emptyProfile=()=>({days:{},flights:[],hotels:[],packed:{},customItems:[]});
-const defaults = {version:2,start:'2026-09-28',end:'2026-10-08',travelers:6,days:{},packed:{},customItems:[],members:Object.fromEntries(members.map(m=>[m.id,emptyProfile()]))};
+const defaults = {version:2,start:'2026-09-29',end:'2026-10-08',travelers:6,days:{},packed:{},customItems:[],members:Object.fromEntries(members.map(m=>[m.id,emptyProfile()]))};
 for(let date of datesBetween(defaults.start,defaults.end))defaults.days[date]={city:scheduledCity(date),from:scheduledFrom(date),note:'',events:[]};
 function validDate(v){if(typeof v!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(v))return false;const d=new Date(v+'T00:00:00Z');return Number.isFinite(+d)&&d.toISOString().slice(0,10)===v&&v>='2020-01-01'&&v<='2100-12-31';}
 function datesBetween(start,end){if(!validDate(start)||!validDate(end))return [];const n=(Date.parse(end)-Date.parse(start))/DAY+1;if(n<1||n>60)return [];return Array.from({length:n},(_,i)=>new Date(Date.parse(start)+i*DAY).toISOString().slice(0,10));}
@@ -220,7 +220,7 @@ function normalizeBase(data){
   const clean={version:1,start:data.start,end:data.end,travelers:data.travelers,days:{},packed:{},customItems:[]};
   const str=(s,n)=>typeof s==='string'?s.slice(0,n):'';
   if(data.days&&typeof data.days==='object')for(const [date,d] of Object.entries(data.days).slice(0,365)){
-    if(!validDate(date)||!d||typeof d!=='object')continue;
+    if(!validDate(date)||date==='2026-09-28'||!d||typeof d!=='object')continue;
     clean.days[date]={city:cities.some(c=>c.id===d.city)?d.city:'',from:cities.some(c=>c.id===d.from)?d.from:'',note:str(d.note,3000),events:[]};
     if(Array.isArray(d.events))clean.days[date].events=d.events.slice(0,30).filter(e=>e&&typeof e.title==='string'&&e.title.trim()).map((e,i)=>({id:str(e.id,80)||'import-'+i,title:str(e.title,100),time:/^([01]\d|2[0-3]):[0-5]\d$/.test(e.time)?e.time:'',duration:str(e.duration,40),place:str(e.place,200),travel:str(e.travel,160),notes:str(e.notes,2000)}));
     const seen=new Set();clean.days[date].events.forEach((e,i)=>{if(seen.has(e.id))e.id='import-'+i+'-'+date;seen.add(e.id);});
@@ -241,7 +241,7 @@ function normalizeBase(data){
 function normalize(data){
   if(!data||![1,2].includes(data.version))throw Error('不支持的行程格式');
   const old=data.version===1;
-  const base=normalizeBase({...data,version:1,start:old&&data.start==='2026-09-29'?'2026-09-28':data.start});
+  const base=normalizeBase({...data,version:1,start:data.start==='2026-09-28'?'2026-09-29':data.start});
   const clean={...base,version:2,members:{}};
   if(old)for(const date of datesBetween(clean.start,clean.end)){
     if(!clean.days[date])clean.days[date]={city:scheduledCity(date),from:scheduledFrom(date),note:'',events:[]};
